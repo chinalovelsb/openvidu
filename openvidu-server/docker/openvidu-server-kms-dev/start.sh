@@ -1,0 +1,1 @@
+docker run -p 4443:4443 --rm -e OPENVIDU_RECORDING=true -e DOMAIN_OR_PUBLIC_IP=192.168.31.56  -e OPENVIDU_SECRET=123456 -e OPENVIDU_RECORDING_PATH=/~/mine -e OPENVIDU_RECORDING_PUBLIC_ACCESS=true -v //var/run/docker.sock:/var/run/docker.sock -v //~/mine:/~/mine openvidu/openvidu-server-kms:dev-1

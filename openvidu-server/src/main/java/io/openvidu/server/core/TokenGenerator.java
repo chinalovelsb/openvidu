@@ -46,19 +46,21 @@ public class TokenGenerator {
 
 	public Token generateToken(String sessionId, String serverMetadata, boolean record, OpenViduRole role,
 			KurentoOptions kurentoOptions, List<IceServerProperties> customIceServers) throws Exception {
-		String token = OpenViduServer.wsUrl;
-		token += "?sessionId=" + sessionId;
-		token += "&token=" + IdentifierPrefixes.TOKEN_ID + RandomStringUtils.randomAlphabetic(1).toUpperCase()
-				+ RandomStringUtils.randomAlphanumeric(15);
+		StringBuilder token = new StringBuilder(OpenViduServer.wsUrl);
+		token.append("?sessionId=").append(sessionId);
+		token.append("&token=" + IdentifierPrefixes.TOKEN_ID).append(RandomStringUtils.randomAlphabetic(1).toUpperCase()).append(RandomStringUtils.randomAlphanumeric(15));
 		TurnCredentials turnCredentials = coturnCredentialsService.createUser();
 		ConnectionProperties.Builder connectionPropertiesBuilder = new ConnectionProperties.Builder()
 				.type(ConnectionType.WEBRTC).data(serverMetadata).record(record).role(role)
 				.kurentoOptions(kurentoOptions);
 		for (IceServerProperties customIceServer: customIceServers) {
 			connectionPropertiesBuilder.addCustomIceServer(customIceServer);
+            if (turnCredentials!=null) {
+                token.append("&role=").append(role.name()).append("&version=").append(openviduBuildConfig.getVersion()).append("&turnUsername=").append(turnCredentials.getUsername()).append("&turnUsername=").append(turnCredentials.getCredential());
+            }
 		}
 		ConnectionProperties connectionProperties = connectionPropertiesBuilder.build();
-		return new Token(token, sessionId, connectionProperties, turnCredentials);
+		return new Token(token.toString(), sessionId, connectionProperties, turnCredentials);
 	}
 
 }

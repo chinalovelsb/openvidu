@@ -1,0 +1,17 @@
+version: "3"
+services: 
+  openvidu-server-kms:
+    image: openvidu/openvidu-server-kms:dev-1
+    container_name: openvidu-server-kms
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/data/temp/mine/record:/opt/openvidu/recordings
+    environment:
+      OPENVIDU_RECORDING: 'true'
+      DOMAIN_OR_PUBLIC_IP: ''
+      OPENVIDU_SECRET: '123456'
+      OPENVIDU_RECORDING_PATH: /opt/openvidu/recordings
+      OPENVIDU_RECORDING_PUBLIC_ACCESS: 'true'
+    ports:
+      - "4443:4443"
+    #  - "10002:10002"
