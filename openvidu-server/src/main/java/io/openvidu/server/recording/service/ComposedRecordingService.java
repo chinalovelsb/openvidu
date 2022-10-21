@@ -399,7 +399,7 @@ public class ComposedRecordingService extends RecordingService {
 		}
 
 		// Wait for the container to be gracefully self-stopped
-		final int timeOfWait = 30;
+		final int timeOfWait = 150;
 		try {
 			dockerManager.waitForContainerStopped(containerId, timeOfWait);
 		} catch (Exception e) {
